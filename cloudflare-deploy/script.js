@@ -1,24 +1,55 @@
 // Mobile nav toggle
 const navToggle = document.getElementById('navToggle');
-const nav = document.getElementById('nav');
+const navLinks = document.getElementById('navLinks');
 
 navToggle.addEventListener('click', () => {
-  nav.classList.toggle('open');
+  navLinks.classList.toggle('open');
 });
 
-nav.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => nav.classList.remove('open'));
+navLinks.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => navLinks.classList.remove('open'));
 });
 
 // Footer year
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// Contact form (no backend - show confirmation message)
-const form = document.getElementById('contactForm');
-const formNote = document.getElementById('formNote');
+// Service accordion
+function toggleSvc(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.svc-chevron');
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.service-block-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.service-block-header').forEach(h => h.classList.remove('open'));
+  document.querySelectorAll('.svc-chevron').forEach(c => c.classList.remove('open'));
+  if (!isOpen) {
+    body.classList.add('open');
+    header.classList.add('open');
+    chevron.classList.add('open');
+  }
+}
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  formNote.textContent = "Thanks for reaching out! We'll get back to you shortly. For faster service, call (360) 323-3302.";
-  form.reset();
-});
+// FAQ accordion
+function toggleFaq(qEl) {
+  const answer = qEl.nextElementSibling;
+  const arrow = qEl.querySelector('.faq-arrow');
+  const isOpen = answer.classList.contains('open');
+  document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
+  document.querySelectorAll('.faq-arrow').forEach(a => a.classList.remove('open'));
+  if (!isOpen) {
+    answer.classList.add('open');
+    arrow.classList.add('open');
+  }
+}
+
+// Forms (no backend - show confirmation message)
+function handleFormSubmit(formId, noteId) {
+  const form = document.getElementById(formId);
+  const note = document.getElementById(noteId);
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    note.textContent = "Thanks for reaching out! We'll get back to you shortly. For faster service, call (360) 323-3302.";
+    form.reset();
+  });
+}
+handleFormSubmit('heroForm', 'heroFormNote');
+handleFormSubmit('contactForm', 'contactFormNote');
